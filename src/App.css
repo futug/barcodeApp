@@ -77,11 +77,13 @@
 }
 
 .barcode__namelayer {
-    background: url(barcode-pattern.svg);
-    height: 135px;
+    background: url("./assets/barcode-pattern.svg") no-repeat;
+    background-size: contain;
+    height: 140px;
     margin-top: -6px;
     display: flex;
     justify-content: center;
+    width: 100%;
 }
 
 .barcode__title {
