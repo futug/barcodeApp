@@ -12,6 +12,7 @@ function App() {
     const [loading, setLoading] = useState(true);
     const [targetResponse, setTargetResponse] = useState(null);
     const [targetLoading, setTargetLoading] = useState(true);
+    const path = window.location.href;
 
     useEffect(() => {
         async function fetchData() {
@@ -34,15 +35,14 @@ function App() {
             }
         }
 
-        fetchData();
+        if (id === undefined || id === null) {
+            fetchData();
+        }
+
         if (id) {
             fetchItem();
         }
     }, [id]);
-
-    console.log(targetResponse);
-    const path = window.location.href;
-    console.log(path);
 
     if (!id) {
         return (
