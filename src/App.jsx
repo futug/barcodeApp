@@ -41,13 +41,15 @@ function App() {
     }, [id]);
 
     console.log(targetResponse);
+    const path = window.location.href;
+    console.log(path);
 
     if (!id) {
         return (
             <div>
                 <p>Выберите ссылку:</p>
                 {data?.map((item) => (
-                    <a key={item.id} href={`http://localhost:5173/?id=${item.id}`}>
+                    <a key={item.id} href={`${path}?id=${item.id}`}>
                         {item.id}
                     </a>
                 ))}
