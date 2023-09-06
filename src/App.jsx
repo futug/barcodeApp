@@ -48,22 +48,61 @@ function App() {
         return (
             <div>
                 <p>Выберите ссылку:</p>
-                {data?.map((item) => (
-                    <a key={item.id} href={`${path}?id=${item.id}`}>
-                        {item.id}
-                    </a>
-                ))}
+                <div className="list__wrapper">
+                    {data?.map((item) => (
+                        <a key={item.id} href={`${path}?id=${item.id}`}>
+                            {item.id}
+                        </a>
+                    ))}
+                </div>
             </div>
         );
     }
 
     return (
-        <div>
-            <h1>Баркод: {id}</h1>
-            <Barcode value={id} />
-            <p>Уровень: {targetResponse?.level}</p>
-            <p>Всего покупок: {targetResponse?.currency}</p>
-            <p>Общая сумма: {targetResponse?.total}</p>
+        <div className="app__wrapper container">
+            <div className="app__header">
+                <div className="header__left">
+                    <h1 className="header__title">Мои бонусы</h1>
+                    <p className="header__subtitle">{targetResponse?.is_active ? "Активен" : "Не активен"}</p>
+                </div>
+                <div className="header__right">
+                    <img
+                        src={targetResponse?.avatar_img ? targetResponse?.avatar_img : "avatar.svg"}
+                        alt="no avatar"
+                        className={targetResponse?.avatar_img ? "header__avatar" : ""}
+                    />
+                </div>
+            </div>
+            <section className="barcode">
+                <div className="barcode__group">
+                    <Barcode value={id} background="transparent" lineColor="#2A4BA0" displayValue={false} width={3.1} height={153} margin={0} />
+                    <div className="barcode__namelayer">
+                        <p
+                            className="barcode__title"
+                            style={{ fontSize: targetResponse?.rest_name.length > 8 ? "24px" : targetResponse?.rest_name.length > 4 ? "36px" : "48px" }}
+                        >
+                            {targetResponse?.rest_name}
+                        </p>
+                    </div>
+                </div>
+            </section>
+            <footer className="customer__info">
+                <p className="customer__info-row">
+                    Уровень: <span>{targetResponse?.level}</span>
+                </p>
+                <p className="customer__info-row">
+                    Всего покупок: <span>{targetResponse?.currency}</span>
+                </p>
+                <p className="customer__info-row">
+                    Общая сумма: <span>{targetResponse?.total}</span>
+                </p>
+                <div className="button__wrapper">
+                    <button type="button" className="customer__info-button">
+                        off bonus
+                    </button>
+                </div>
+            </footer>
         </div>
     );
 }
