@@ -10,7 +10,8 @@ function App() {
     const id = searchParams.get("id");
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
-    const targetResponse = data?.find((item) => String(item.id) === id);
+    const [targetResponse, setTargetResponse] = useState(null);
+    const [targetLoading, setTargetLoading] = useState(true);
 
     useEffect(() => {
         async function fetchData() {
@@ -23,8 +24,21 @@ function App() {
             }
         }
 
+        async function fetchItem() {
+            try {
+                const response = await axios.get("https://futug-server.vercel.app/api/" + id);
+                setTargetResponse(response.data);
+                setTargetLoading(false);
+            } catch (error) {
+                console.error("Произошла ошибка при выполнении запроса:", error);
+            }
+        }
+
         fetchData();
-    }, []);
+        if (id) {
+            fetchItem();
+        }
+    }, [id]);
 
     console.log(targetResponse);
 
@@ -43,13 +57,7 @@ function App() {
 
     return (
         <div>
-            <p>Выберите ссылку:</p>
-            {data?.map((item) => (
-                <a key={item.id} href={`http://localhost:5173/?id=${item.id}`}>
-                    {item.id}
-                </a>
-            ))}
-            <h1>Баркод: </h1>
+            <h1>Баркод: {id}</h1>
             <Barcode value={id} />
             <p>Уровень: {targetResponse?.level}</p>
             <p>Всего покупок: {targetResponse?.currency}</p>
