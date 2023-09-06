@@ -29,11 +29,21 @@ function App() {
     console.log(targetResponse);
 
     if (!id) {
-        return <div>Ошибка: ID не найден в URL.</div>;
+        return (
+            <div>
+                <p>Выберите ссылку:</p>
+                {data?.map((item) => (
+                    <a key={item.id} href={`http://localhost:5173/?id=${item.id}`}>
+                        {item.id}
+                    </a>
+                ))}
+            </div>
+        );
     }
 
     return (
         <div>
+            <p>Выберите ссылку:</p>
             {data?.map((item) => (
                 <a key={item.id} href={`http://localhost:5173/?id=${item.id}`}>
                     {item.id}
