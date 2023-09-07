@@ -22,6 +22,16 @@ function App() {
     }
 
     useEffect(() => {
+        if (window.screen && screen.orientation && screen.orientation.lock) {
+            screen.orientation.lock("portrait").catch(function (error) {
+                console.error("Ошибка блокировки ориентации экрана:", error);
+            });
+        } else {
+            console.log("Браузер или устройство не поддерживают блокировку ориентации экрана.");
+        }
+    }, []);
+
+    useEffect(() => {
         async function fetchData() {
             try {
                 const response = await axios.get("https://futug-server.vercel.app/api");
