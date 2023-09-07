@@ -11,8 +11,13 @@ function App() {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [targetResponse, setTargetResponse] = useState(null);
+    const [isShow, setIsShow] = useState(false);
     const [targetLoading, setTargetLoading] = useState(true);
     const path = window.location.href;
+
+    function showPopup() {
+        setIsShow(true);
+    }
 
     useEffect(() => {
         async function fetchData() {
@@ -76,7 +81,7 @@ function App() {
             </div>
             <section className="barcode">
                 <div className="barcode__group">
-                    <Barcode value={id} background="transparent" lineColor="#2A4BA0" displayValue={false} width={3.1} height={153} margin={0} />
+                    <Barcode value={targetResponse?.id} background="transparent" lineColor="#2A4BA0" displayValue={false} width={3.1} height={153} margin={0} />
                     <div className="barcode__namelayer">
                         <p
                             className="barcode__title"
@@ -98,11 +103,16 @@ function App() {
                     Общая сумма: <span>{targetResponse?.total}</span>
                 </p>
                 <div className="button__wrapper">
-                    <button type="button" className="customer__info-button">
+                    <button type="button" className="customer__info-button" onClick={showPopup}>
                         off bonus
                     </button>
                 </div>
             </footer>
+            <div className="popup" style={{ transform: isShow ? "translateX(0)" : "translateX(100%)" }} onClick={(e) => setIsShow(false)}>
+                <div className="popup__barcode">
+                    <Barcode value={targetResponse?.id} background="transparent" lineColor="#2A4BA0" displayValue={false} width={5} height={300} margin={0} />
+                </div>
+            </div>
         </div>
     );
 }
