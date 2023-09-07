@@ -173,6 +173,15 @@
     transform: rotate(90deg);
 }
 
+.popup__barcode-title {
+    margin: 0;
+    font-family: "Manrope";
+    font-size: 24px;
+    text-align: center;
+    font-weight: 700;
+    color: #2a4ba0;
+}
+
 @media (max-width: 350px) {
     .app__wrapper {
         width: 100%;

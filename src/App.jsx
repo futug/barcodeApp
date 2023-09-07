@@ -14,35 +14,6 @@ function App() {
     const [isShow, setIsShow] = useState(false);
     const [targetLoading, setTargetLoading] = useState(true);
     const path = window.location.href;
-    const [originalViewportContent, setOriginalViewportContent] = useState("");
-
-    useEffect(() => {
-        const setViewportMetaTag = () => {
-            const metaTag = document.querySelector("meta[name='viewport']");
-            if (metaTag) {
-                if (isShow) {
-                    setOriginalViewportContent(metaTag.getAttribute("content"));
-
-                    metaTag.setAttribute("content", "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no");
-                } else {
-                    metaTag.setAttribute("content", originalViewportContent);
-                }
-            }
-        };
-
-        setViewportMetaTag();
-
-        if (isShow) {
-            setViewportMetaTag();
-        }
-
-        return () => {
-            const metaTag = document.querySelector("meta[name='viewport']");
-            if (metaTag) {
-                metaTag.removeAttribute("content");
-            }
-        };
-    }, [isShow, originalViewportContent]);
 
     function showPopup() {
         setIsShow(true);
@@ -133,13 +104,14 @@ function App() {
                 </p>
                 <div className="button__wrapper">
                     <button type="button" className="customer__info-button" onClick={showPopup}>
-                        off bonus
+                        Get the bonus
                     </button>
                 </div>
             </footer>
-            <div className="popup" style={{ transform: isShow ? "translateX(0)" : "translateX(100%)" }} onClick={(e) => setIsShow(false)}>
+            <div className="popup" style={{ transform: isShow ? "translateX(0)" : "translateX(100%)" }} onClick={() => setIsShow(false)}>
                 <div className="popup__barcode">
-                    <Barcode value={targetResponse?.id} background="transparent" lineColor="#2A4BA0" displayValue={false} width={5} height={300} margin={0} />
+                    <Barcode value={targetResponse?.id} background="transparent" lineColor="#2A4BA0" displayValue={false} width={4.8} height={250} margin={0} />
+                    <p className="popup__barcode-title">Тапните, что бы закрыть</p>
                 </div>
             </div>
         </div>
