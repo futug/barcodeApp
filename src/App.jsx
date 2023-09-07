@@ -17,22 +17,11 @@ function App() {
     const path = window.location.href;
 
     useEffect(() => {
-        const handleOrientationChange = () => {
-            const currentOrientation = window.screen.orientation || window.screen.mozOrientation || window.screen.msOrientation;
-
-            if (currentOrientation.type === "landscape-primary" || currentOrientation.type === "landscape-secondary") {
-                screen.orientation.lock("portrait-primary");
-            } else {
-                screen.orientation.unlock();
-            }
-        };
-
-        window.addEventListener("orientationchange", handleOrientationChange);
-
-        return () => {
-            window.removeEventListener("orientationchange", handleOrientationChange);
-        };
-    }, []);
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            var viewportMeta = document.querySelector('meta[name="viewport"]');
+            viewportMeta.setAttribute("content", "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no");
+        }
+    }, []); // Пустой массив зависимостей означает, что эффект будет выполняться только при монтировании компонента
 
     function showPopup() {
         setIsShow(true);
