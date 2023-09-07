@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Barcode from "react-barcode";
 import axios from "axios";
+import { ClipLoader } from "react-spinners";
 
 function App() {
     const location = useLocation();
@@ -14,6 +15,24 @@ function App() {
     const [isShow, setIsShow] = useState(false);
     const [targetLoading, setTargetLoading] = useState(true);
     const path = window.location.href;
+
+    useEffect(() => {
+        const handleOrientationChange = () => {
+            const currentOrientation = window.screen.orientation || window.screen.mozOrientation || window.screen.msOrientation;
+
+            if (currentOrientation.type === "landscape-primary" || currentOrientation.type === "landscape-secondary") {
+                screen.orientation.lock("portrait-primary");
+            } else {
+                screen.orientation.unlock();
+            }
+        };
+
+        window.addEventListener("orientationchange", handleOrientationChange);
+
+        return () => {
+            window.removeEventListener("orientationchange", handleOrientationChange);
+        };
+    }, []);
 
     function showPopup() {
         setIsShow(true);
