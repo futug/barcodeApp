@@ -133,6 +133,7 @@ function App() {
                         </button>
                     </div>
                 </footer>
+                <div className="overlay" style={{ opacity: isShow ? "1" : "0" }}></div>
                 <div className="popup" style={{ transform: isShow ? "translateX(0)" : "translateX(100%)" }} onClick={() => setIsShow(false)}>
                     <div className="popup__barcode">
                         <Barcode
@@ -144,7 +145,12 @@ function App() {
                             height={250}
                             margin={0}
                         />
-                        <p className="popup__barcode-title">Тапните, что бы закрыть</p>
+                        <p
+                            className="popup__barcode-title"
+                            style={{ opacity: isShow ? "1" : "0", transform: isShow ? "translateX(0)" : "translateX(100%)", transitionDelay: "0.5s" }}
+                        >
+                            Тапните, что бы закрыть
+                        </p>
                     </div>
                 </div>
             </div>
