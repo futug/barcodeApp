@@ -14,6 +14,35 @@ function App() {
     const [isShow, setIsShow] = useState(false);
     const [targetLoading, setTargetLoading] = useState(true);
     const path = window.location.href;
+    const [originalViewportContent, setOriginalViewportContent] = useState("");
+
+    useEffect(() => {
+        const setViewportMetaTag = () => {
+            const metaTag = document.querySelector("meta[name='viewport']");
+            if (metaTag) {
+                if (isShow) {
+                    setOriginalViewportContent(metaTag.getAttribute("content"));
+
+                    metaTag.setAttribute("content", "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no");
+                } else {
+                    metaTag.setAttribute("content", originalViewportContent);
+                }
+            }
+        };
+
+        setViewportMetaTag();
+
+        if (isShow) {
+            setViewportMetaTag();
+        }
+
+        return () => {
+            const metaTag = document.querySelector("meta[name='viewport']");
+            if (metaTag) {
+                metaTag.removeAttribute("content");
+            }
+        };
+    }, [isShow, originalViewportContent]);
 
     function showPopup() {
         setIsShow(true);
