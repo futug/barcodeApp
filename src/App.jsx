@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Barcode from "react-barcode";
 import axios from "axios";
-import { ClipLoader } from "react-spinners";
 
 function App() {
     const location = useLocation();
@@ -14,14 +13,9 @@ function App() {
     const [targetResponse, setTargetResponse] = useState(null);
     const [isShow, setIsShow] = useState(false);
     const [targetLoading, setTargetLoading] = useState(true);
-    const path = window.location.href;
+    const targetId = targetResponse?.id.toString();
 
-    useEffect(() => {
-        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-            var viewportMeta = document.querySelector('meta[name="viewport"]');
-            viewportMeta.setAttribute("content", "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no");
-        }
-    }, []); // Пустой массив зависимостей означает, что эффект будет выполняться только при монтировании компонента
+    const path = window.location.href;
 
     function showPopup() {
         setIsShow(true);
@@ -72,54 +66,76 @@ function App() {
         );
     }
 
+    if (targetLoading) {
+        return <div>Загружаем ваши бонусы</div>;
+    }
+
     return (
-        <div className="app__wrapper container">
-            <div className="app__header">
-                <div className="header__left">
-                    <h1 className="header__title">Мои бонусы</h1>
-                    <p className="header__subtitle">{targetResponse?.is_active ? "Активен" : "Не активен"}</p>
-                </div>
-                <div className="header__right">
-                    <img
-                        src={targetResponse?.avatar_img ? targetResponse?.avatar_img : "avatar.svg"}
-                        alt="no avatar"
-                        className={targetResponse?.avatar_img ? "header__avatar" : ""}
-                    />
-                </div>
-            </div>
-            <section className="barcode">
-                <div className="barcode__group">
-                    <Barcode value={targetResponse?.id} background="transparent" lineColor="#2A4BA0" displayValue={false} width={3.1} height={153} margin={0} />
-                    <div className="barcode__namelayer">
-                        <p
-                            className="barcode__title"
-                            style={{ fontSize: targetResponse?.rest_name.length > 8 ? "24px" : targetResponse?.rest_name.length > 4 ? "36px" : "48px" }}
-                        >
-                            {targetResponse?.rest_name}
-                        </p>
+        <div className="rootElem">
+            <div className="app__wrapper container">
+                <div className="app__header">
+                    <div className="header__left">
+                        <h1 className="header__title">Мои бонусы</h1>
+                        <p className="header__subtitle">{targetResponse?.is_active ? "Активен" : "Не активен"}</p>
+                    </div>
+                    <div className="header__right">
+                        <img
+                            src={targetResponse?.avatar_img ? targetResponse?.avatar_img : "avatar.svg"}
+                            alt="no avatar"
+                            className={targetResponse?.avatar_img ? "header__avatar" : ""}
+                        />
                     </div>
                 </div>
-            </section>
-            <footer className="customer__info">
-                <p className="customer__info-row">
-                    Уровень: <span>{targetResponse?.level}</span>
-                </p>
-                <p className="customer__info-row">
-                    Всего покупок: <span>{targetResponse?.currency}</span>
-                </p>
-                <p className="customer__info-row">
-                    Общая сумма: <span>{targetResponse?.total}</span>
-                </p>
-                <div className="button__wrapper">
-                    <button type="button" className="customer__info-button" onClick={showPopup}>
-                        Get the bonus
-                    </button>
-                </div>
-            </footer>
-            <div className="popup" style={{ transform: isShow ? "translateX(0)" : "translateX(100%)" }} onClick={() => setIsShow(false)}>
-                <div className="popup__barcode">
-                    <Barcode value={targetResponse?.id} background="transparent" lineColor="#2A4BA0" displayValue={false} width={4.8} height={250} margin={0} />
-                    <p className="popup__barcode-title">Тапните, что бы закрыть</p>
+                <section className="barcode">
+                    <div className="barcode__group">
+                        <Barcode
+                            value={targetResponse ? targetId : "00000"}
+                            background="transparent"
+                            lineColor="#2A4BA0"
+                            displayValue={false}
+                            width={3.1}
+                            height={153}
+                            margin={0}
+                        />
+                        <div className="barcode__namelayer">
+                            <p
+                                className="barcode__title"
+                                style={{ fontSize: targetResponse?.rest_name.length > 8 ? "24px" : targetResponse?.rest_name.length > 4 ? "36px" : "48px" }}
+                            >
+                                {targetResponse?.rest_name}
+                            </p>
+                        </div>
+                    </div>
+                </section>
+                <footer className="customer__info">
+                    <p className="customer__info-row">
+                        Уровень: <span>{targetResponse?.level}</span>
+                    </p>
+                    <p className="customer__info-row">
+                        Всего покупок: <span>{targetResponse?.currency}</span>
+                    </p>
+                    <p className="customer__info-row">
+                        Общая сумма: <span>{targetResponse?.total}</span>
+                    </p>
+                    <div className="button__wrapper">
+                        <button type="button" className="customer__info-button" onClick={showPopup}>
+                            Get the bonus
+                        </button>
+                    </div>
+                </footer>
+                <div className="popup" style={{ transform: isShow ? "translateX(0)" : "translateX(100%)" }} onClick={() => setIsShow(false)}>
+                    <div className="popup__barcode">
+                        <Barcode
+                            value={targetResponse ? targetId : "00000"}
+                            background="transparent"
+                            lineColor="#2A4BA0"
+                            displayValue={false}
+                            width={4.8}
+                            height={250}
+                            margin={0}
+                        />
+                        <p className="popup__barcode-title">Тапните, что бы закрыть</p>
+                    </div>
                 </div>
             </div>
         </div>
